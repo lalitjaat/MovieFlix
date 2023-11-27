@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color backgroundColor = const Color.fromARGB(137, 93, 88, 88);
+Color backgroundColor = Color.fromARGB(78, 0, 0, 0);
 Color boxColor = const Color.fromARGB(255, 255, 255, 255);
 
 PreferredSizeWidget? app_Bar(String title) {
@@ -15,13 +15,14 @@ PreferredSizeWidget? app_Bar(String title) {
   );
 }
 
-TextStyle titleStyle =
-    const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20);
+TextStyle titleStyle = const TextStyle(
+    color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20);
 
-TextStyle categoryStyle =
-    const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17);
+TextStyle categoryStyle = const TextStyle(
+    color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17);
 
-TextStyle priceStyle = const TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
+TextStyle priceStyle =
+const TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 
 class productCard extends StatelessWidget {
   String imageUrl;
@@ -38,15 +39,30 @@ class productCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-         width: 200,
-          child: Image.network(imageUrl, fit: BoxFit.fill,)),
-        Text(productTitle),
-        
-      ],
-    );
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        clipBehavior: Clip.hardEdge,
+        decoration:  BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 10,
+              offset: Offset(0, 3),
+            ),
+          ],
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        height: 180,
+        width: 180,
+        child: ClipRect(
+          child: Material(
+            shadowColor: Colors.black,
+            elevation: 100,
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.fill,
+              isAntiAlias: true,
+            ),
+          ),
+        ));
   }
 }

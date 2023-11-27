@@ -1,9 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movieflix/constants.dart';
 import 'dart:convert';
 
+import 'constants.dart';
 import 'model.dart';
 
 class ecommerceApi extends StatefulWidget {
@@ -16,15 +15,10 @@ class ecommerceApi extends StatefulWidget {
 class _ecommerceApiState extends State<ecommerceApi> {
   List<SamplePosts> samplePosts = [];
 
-
-void initState() {
-  getData();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       appBar: app_Bar("Movies FLix"),
       body: FutureBuilder(
         future: getData(),
@@ -34,42 +28,35 @@ void initState() {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
-                  child:
-                   Container(
-             
-              child: CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                    padding:
-                    const EdgeInsets.symmetric(),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 2,
-                          mainAxisSpacing: 2,
-                          childAspectRatio:1
+                    child: Container(
+
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: CustomScrollView(
+                        semanticChildCount: 5,
+                        slivers: [
+                          SliverPadding(
+                            padding: const EdgeInsets.symmetric(),
+                            sliver: SliverGrid(
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 2,
+                                mainAxisSpacing: 15,
+                              ),
+                              delegate: SliverChildBuilderDelegate(
+                                  childCount: samplePosts.length,
+                                      (context, index) {
+                                    return productCard(
+                                        category: samplePosts[index].category,
+                                        imageUrl: samplePosts[index].image,
+                                        price: samplePosts[index].price,
+                                        productTitle: samplePosts[index].title);
+                                  }),
+                            ),
+                          )
+                        ],
                       ),
-                      delegate: SliverChildBuilderDelegate(childCount: samplePosts.length,
-                              (BuildContext context, int index) {
-                            return  productCard(
-                            category: samplePosts[index].category,
-                            imageUrl: samplePosts[index].image,
-                            price: samplePosts[index].price,
-                            productTitle: samplePosts[index].title);
-                          }),
-                    ),
-                  )
-                ],
-              ),
-            )
-
-
-
-
-                  
-                ),
-                
+                    )),
               ],
             );
           } else {
@@ -83,8 +70,6 @@ void initState() {
   }
 
   Future<List<SamplePosts>> getData() async {
-      List<SamplePosts> samplePosts = [];
-
     final response = await http.get(
       Uri.parse(
         'https://api.tvmaze.com/search/shows?q=all',
@@ -94,10 +79,7 @@ void initState() {
 
     if (response.statusCode == 200) {
       for (Map<String, dynamic> index in data) {
-
         samplePosts.add(SamplePosts.fromJson(index));
-                print(samplePosts[0].image);
-
       }
       return samplePosts;
     } else {
